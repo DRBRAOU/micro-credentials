@@ -1,0 +1,74 @@
+/* Micro-Credential Course Designer - Minimal Professional Styles */
+
+[data-testid="stAppViewContainer"] {
+    background-color: #ffffff;
+}
+
+[data-testid="stSidebar"] {
+    background-color: #f9fafb;
+    border-right: 1px solid #e5e7eb;
+}
+
+h1, h2, h3 {
+    color: #1f2937;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 1.25rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e5e7eb;
+    margin-bottom: 0.75rem;
+}
+
+.card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 0.25rem;
+}
+
+.card-description {
+    font-size: 0.875rem;
+    color: #6b7280;
+    line-height: 1.5;
+}
+
+.stButton > button {
+    background-color: #2563eb;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.stButton > button:hover {
+    background-color: #1d4ed8;
+}
+
+.stTextInput > div > div > input,
+.stTextArea > div > div > textarea,
+.stSelectbox > div > div {
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+}
+
+.footer {
+    text-align: center;
+    padding: 1rem 0;
+    color: #9ca3af;
+    font-size: 0.75rem;
+    border-top: 1px solid #e5e7eb;
+    margin-top: 2rem;
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 1rem;
+}
