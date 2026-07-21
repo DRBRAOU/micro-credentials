@@ -13,6 +13,7 @@ from components.header import render_header
 from components.footer import render_footer
 from components.cards import render_feature_cards
 from components.sidebar import render_sidebar_branding
+from services.retrieval import get_loaded_documents_info
 
 
 def load_css() -> None:
@@ -54,6 +55,19 @@ def main() -> None:
     ]
 
     render_feature_cards(features)
+
+    # Knowledge documents status
+    st.markdown("---")
+    st.markdown("### Knowledge Documents Loaded")
+    docs_info = get_loaded_documents_info()
+    if docs_info:
+        for name, chars in docs_info:
+            status = "Loaded" if chars > 0 else "Failed to read"
+            st.text(f"  {name} — {status} ({chars:,} chars)")
+        st.caption(f"Total: {len(docs_info)} documents")
+    else:
+        st.text("  No documents found in knowledge/ folder.")
+
     render_footer()
 
 

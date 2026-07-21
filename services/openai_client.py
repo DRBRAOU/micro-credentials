@@ -12,9 +12,11 @@ def _get_secret(key: str, default: str = "") -> str:
     """Get secret from Streamlit secrets (Cloud) or env vars (local)."""
     try:
         import streamlit as st
-        return st.secrets.get(key, os.getenv(key, default))
+        if hasattr(st, "secrets") and key in st.secrets:
+            return st.secrets[key]
     except Exception:
-        return os.getenv(key, default)
+        pass
+    return os.getenv(key, default)
 
 
 class OpenAIClient:
@@ -23,18 +25,15 @@ class OpenAIClient:
     def __init__(self, api_key: Optional[str] = None) -> None:
         self.api_key = api_key or _get_secret("OPENAI_API_KEY")
         self.model = _get_secret("OPENAI_MODEL", "gpt-4o-mini")
-        self.client = OpenAI(api_key=self.api_key)
+        if not self.api_key:
+            self.client = None
+        else:
+            self.client = OpenAI(api_key=self.api_key)
 
     def generate(self, system_prompt: str, user_prompt: str) -> str:
-        """Send a prompt to OpenAI and return the response text.
-
-        Args:
-            system_prompt: System-level instruction.
-            user_prompt: User-level content/question.
-
-        Returns:
-            Generated text response.
-        """
+        """Send a prompt to OpenAI and return the response text."""
+        if not self.client:
+            return "Error: OpenAI API key not configured. Please add OPENAI_API_KEY in Settings > Secrets."
         try:
             response = self.client.chat.completions.create(
                 model=self.model,
