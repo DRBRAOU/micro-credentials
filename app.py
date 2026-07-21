@@ -37,12 +37,6 @@ def main() -> None:
     render_sidebar_branding()
     render_header()
 
-    st.markdown(
-        "Designs, reviews, and improves higher education micro-credential and "
-        "credit-based courses aligned with NCrF, NHEQF, UGC guidelines, "
-        "Bloom's Taxonomy, and Outcome-Based Education (OBE)."
-    )
-
     st.markdown("---")
 
     # Generate Course form directly on landing page
