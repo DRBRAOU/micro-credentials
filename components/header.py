@@ -14,9 +14,13 @@ def render_header() -> None:
     )
 
     if logo_path.exists():
-        col1, col2, col3 = st.columns([2, 1, 2])
-        with col2:
-            st.image(str(logo_path), width=100)
+        import base64
+        logo_bytes = logo_path.read_bytes()
+        logo_b64 = base64.b64encode(logo_bytes).decode()
+        st.markdown(
+            f'<div style="text-align: center;"><img src="data:image/png;base64,{logo_b64}" width="100"></div>',
+            unsafe_allow_html=True,
+        )
 
     st.markdown(
         """
