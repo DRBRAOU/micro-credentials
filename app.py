@@ -11,9 +11,10 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from components.header import render_header
 from components.footer import render_footer
-from components.cards import render_feature_cards
 from components.sidebar import render_sidebar_branding
-from services.retrieval import get_loaded_documents_info
+from components.forms import render_course_form
+from services.openai_client import OpenAIClient
+from services.retrieval import load_knowledge_context
 
 
 def load_css() -> None:
@@ -43,30 +44,26 @@ def main() -> None:
     )
 
     st.markdown("---")
-    st.markdown("### Features")
 
-    features = [
-        {"title": "Course Design", "description": "Generate complete course structures with outcomes, units, and assessments."},
-        {"title": "Course Review", "description": "Analyze existing courses for framework alignment and gaps."},
-        {"title": "Assessment Design", "description": "Create OBE-aligned assessments mapped to Bloom's Taxonomy."},
-        {"title": "Rubrics", "description": "Generate criterion-referenced rubrics with performance descriptors."},
-        {"title": "LMS Structure", "description": "Design Moodle-ready course layouts with modules and activities."},
-        {"title": "Export", "description": "Download course proposals in DOCX, PDF, or Markdown format."},
-    ]
+    # Generate Course form directly on landing page
+    st.markdown("### Generate Course")
+    st.caption("Fill in the details below to generate a complete course design.")
 
-    render_feature_cards(features)
+    form_data = render_course_form()
 
-    # Knowledge documents status
-    st.markdown("---")
-    st.markdown("### Knowledge Documents Loaded")
-    docs_info = get_loaded_documents_info()
-    if docs_info:
-        for name, chars in docs_info:
-            status = "Loaded" if chars > 0 else "Failed to read"
-            st.text(f"  {name} — {status} ({chars:,} chars)")
-        st.caption(f"Total: {len(docs_info)} documents")
-    else:
-        st.text("  No documents found in knowledge/ folder.")
+    if form_data:
+        if not form_data.get("course_title"):
+            st.warning("Please enter a course title.")
+            return
+
+        with st.spinner("Generating course design..."):
+            client = OpenAIClient()
+            context = load_knowledge_context()
+            result = client.generate_course(form_data, context)
+
+        st.markdown("---")
+        st.markdown("### Generated Course Design")
+        st.markdown(result)
 
     render_footer()
 
